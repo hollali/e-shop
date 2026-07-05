@@ -6,7 +6,7 @@ import { SITE_NAME, SITE_DESCRIPTION } from "@/lib/constants";
 import { SanityLive } from "@/sanity/lib/live";
 import { CartLoader } from "@/components/cart/cart-loader";
 import { client } from "@/sanity/lib/client";
-import { navigationQuery } from "@/sanity/lib/queries";
+import { navigationQuery, categoriesQuery } from "@/sanity/lib/queries";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -36,15 +36,30 @@ export default async function RootLayout({
         { title: "About", href: "/about" },
       ];
 
-  const mainNavItems = navData?.mainNavItems?.length
-    ? navData.mainNavItems
-    : [
+  let mainNavItems = navData?.mainNavItems?.length
+    ? navData.mainNavItems.map((item: any) => ({
+        ...item,
+        href: item.categorySlug ? `/categories/${item.categorySlug}` : item.href || "#",
+      }))
+    : null;
+
+  if (!mainNavItems) {
+    try {
+      const categories: any[] = await client.fetch(categoriesQuery);
+      mainNavItems = categories.map((cat: any) => ({
+        title: cat.name.toUpperCase(),
+        href: `/categories/${cat.slug}`,
+      }));
+    } catch (_) {
+      mainNavItems = [
         { title: "MEN", href: "/products?category=men" },
         { title: "WOMEN", href: "/products?category=women" },
         { title: "BRANDS", href: "/products?category=brands" },
         { title: "DISCOUNT", href: "/products?discount=true" },
         { title: "UNISEX", href: "/products?category=unisex" },
       ];
+    }
+  }
 
   return (
     <ClerkProvider

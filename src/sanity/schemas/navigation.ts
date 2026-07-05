@@ -36,7 +36,14 @@ export default defineType({
           name: "mainNavItem",
           fields: [
             defineField({ name: "title", type: "string", title: "Title" }),
-            defineField({ name: "href", type: "string", title: "Link URL" }),
+            defineField({
+              name: "category",
+              type: "reference",
+              to: [{ type: "category" }],
+              title: "Link to Category",
+              description: "If set, overrides the Link URL with the category slug",
+            }),
+            defineField({ name: "href", type: "string", title: "Link URL", description: "Used only when no category is selected" }),
             defineField({
               name: "children",
               title: "Sub Items (Mega Menu)",
@@ -53,6 +60,15 @@ export default defineType({
               ],
             }),
           ],
+          preview: {
+            select: {
+              title: "title",
+              categoryTitle: "category.name",
+            },
+            prepare({ title, categoryTitle }: { title?: string; categoryTitle?: string }) {
+              return { title: title || "Untitled", subtitle: categoryTitle ? `→ ${categoryTitle}` : "No category" };
+            },
+          },
         },
       ],
     }),

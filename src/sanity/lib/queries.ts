@@ -86,5 +86,10 @@ export const productBySlugQuery = groq`*[_type == "product" && slug.current == $
 export const navigationQuery = groq`*[_type == "navigation"][0] {
   _id,
   topBarItems[] { title, href },
-  mainNavItems[] { title, href, children[] { title, href } }
+  mainNavItems[] {
+    title,
+    href,
+    "categorySlug": category->slug.current,
+    children[] { title, href }
+  }
 }`;
