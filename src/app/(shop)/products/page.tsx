@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { ProductGrid } from "@/components/product/product-grid";
 import { ProductGridSkeleton } from "@/components/product/product-card-skeleton";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
 import { client } from "@/sanity/lib/client";
 import { productsQuery } from "@/sanity/lib/queries";
@@ -30,10 +31,10 @@ export default function ProductsPage() {
         <div className="flex flex-col md:flex-row gap-8">
           <aside className="w-full md:w-64 flex-shrink-0">
             <div className="space-y-4">
-              <div className="h-10 bg-gray-200 animate-pulse rounded-md" />
+              <Skeleton className="h-10 w-full" />
               <div className="space-y-2">
                 {[1, 2, 3, 4, 5].map((i) => (
-                  <div key={i} className="h-5 bg-gray-200 animate-pulse rounded w-24" />
+                  <Skeleton key={i} className="h-5 w-24" />
                 ))}
               </div>
             </div>

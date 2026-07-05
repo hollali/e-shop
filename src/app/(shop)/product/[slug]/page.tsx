@@ -130,8 +130,11 @@ export default function ProductDetailPage() {
 
   if (!product) {
     return (
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        <p className="text-gray-500">Product not found.</p>
+      <div className="max-w-7xl mx-auto px-4 py-16 text-center">
+        <p className="text-gray-500 mb-6">Product not found or no longer available.</p>
+        <Link href="/products">
+          <Button>Browse Products</Button>
+        </Link>
       </div>
     );
   }
