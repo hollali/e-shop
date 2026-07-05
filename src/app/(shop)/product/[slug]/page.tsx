@@ -6,7 +6,6 @@ import Link from "next/link";
 import { Heart, ShoppingBag, Share2, Check, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Skeleton } from "@/components/ui/skeleton";
 import { formatPrice } from "@/lib/utils";
 import { useCart } from "@/store/cart";
 import { useAuth } from "@clerk/nextjs";
@@ -17,7 +16,6 @@ export default function ProductDetailPage() {
   const params = useParams();
   const slug = params.slug as string;
   const [product, setProduct] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
   const addItem = useCart((s) => s.addItem);
 
   const [selectedImage, setSelectedImage] = useState(0);
@@ -31,10 +29,8 @@ export default function ProductDetailPage() {
   const { userId } = useAuth();
 
   useEffect(() => {
-    setLoading(true);
     client.fetch(productBySlugQuery, { slug }).then((data) => {
       setProduct(data);
-      setLoading(false);
     });
   }, [slug]);
 
@@ -103,30 +99,6 @@ export default function ProductDetailPage() {
     setShareCopied(true);
     setTimeout(() => setShareCopied(false), 2000);
   }, []);
-
-  if (loading) {
-    return (
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
-          <div>
-            <Skeleton className="aspect-square rounded-lg mb-4" />
-            <div className="flex gap-3">
-              {[1, 2, 3].map((i) => (
-                <Skeleton key={i} className="w-20 h-20 rounded-md" />
-              ))}
-            </div>
-          </div>
-          <div className="space-y-4">
-            <Skeleton className="h-4 w-24" />
-            <Skeleton className="h-8 w-3/4" />
-            <Skeleton className="h-10 w-40" />
-            <Skeleton className="h-24 w-full" />
-            <Skeleton className="h-10 w-full" />
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   if (!product) {
     return (

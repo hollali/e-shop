@@ -2,21 +2,17 @@
 
 import { useState, useEffect } from "react";
 import { ProductGrid } from "@/components/product/product-grid";
-import { ProductGridSkeleton } from "@/components/product/product-card-skeleton";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
 import { client } from "@/sanity/lib/client";
 import { productsQuery } from "@/sanity/lib/queries";
 
 export default function ProductsPage() {
   const [products, setProducts] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
 
   useEffect(() => {
     client.fetch(productsQuery).then((data) => {
       setProducts(data);
-      setLoading(false);
     });
   }, []);
 
@@ -24,28 +20,6 @@ export default function ProductsPage() {
     (p) =>
       p.name?.toLowerCase().includes(search.toLowerCase()) && p.inStock !== false
   );
-
-  if (loading) {
-    return (
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        <div className="flex flex-col md:flex-row gap-8">
-          <aside className="w-full md:w-64 flex-shrink-0">
-            <div className="space-y-4">
-              <Skeleton className="h-10 w-full" />
-              <div className="space-y-2">
-                {[1, 2, 3, 4, 5].map((i) => (
-                  <Skeleton key={i} className="h-5 w-24" />
-                ))}
-              </div>
-            </div>
-          </aside>
-          <div className="flex-1">
-            <ProductGridSkeleton count={12} />
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">

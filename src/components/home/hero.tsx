@@ -5,17 +5,14 @@ import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { client } from "@/sanity/lib/client";
 import { bannersQuery } from "@/sanity/lib/queries";
-import { HeroSkeleton } from "./hero-skeleton";
 
 export function Hero() {
   const [slides, setSlides] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
   const [current, setCurrent] = useState(0);
 
   useEffect(() => {
     client.fetch(bannersQuery).then((data) => {
       if (data && data.length > 0) setSlides(data);
-      setLoading(false);
     });
   }, []);
 
@@ -27,7 +24,6 @@ export function Hero() {
     return () => clearInterval(timer);
   }, [slides.length]);
 
-  if (loading) return <HeroSkeleton />;
   if (slides.length === 0) return null;
 
   const prev = () => setCurrent((c) => (c - 1 + slides.length) % slides.length);
