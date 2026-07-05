@@ -23,6 +23,7 @@ const apiVersion = process.env.NEXT_PUBLIC_SANITY_API_VERSION || '2026-07-05'
 
 export default defineCliConfig({
   api: { projectId, dataset },
+  studioHost: "stylehive",
   vite: (prev: Record<string, any>) => ({
     ...prev,
     define: {

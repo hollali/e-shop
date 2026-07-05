@@ -4,7 +4,9 @@ import { client } from "@/sanity/lib/client";
 import { featuredProductsQuery } from "@/sanity/lib/queries";
 
 export async function FeaturedProducts() {
-  const products = await client.fetch(featuredProductsQuery);
+  let products: any[] = [];
+  try { products = await client.fetch(featuredProductsQuery); } catch (_) {}
+
 
   return (
     <section className="py-12 bg-gray-50">

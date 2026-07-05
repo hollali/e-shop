@@ -3,7 +3,9 @@ import { client } from "@/sanity/lib/client";
 import { categoriesQuery } from "@/sanity/lib/queries";
 
 export async function CategoriesSection() {
-  const categories = await client.fetch(categoriesQuery);
+  let categories: any[] = [];
+  try { categories = await client.fetch(categoriesQuery); } catch (_) {}
+
 
   if (categories.length === 0) return null;
 
