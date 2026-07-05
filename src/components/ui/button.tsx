@@ -24,7 +24,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           {
             "h-9 px-3 text-sm": size === "sm",
             "h-11 px-5 text-sm": size === "md",
-            "h-13 px-8 text-base": size === "lg",
+            "h-14 px-8 text-base": size === "lg",
           },
           className
         )}

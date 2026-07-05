@@ -1,16 +1,28 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { ProductGrid } from "@/components/product/product-grid";
 import { Input } from "@/components/ui/input";
 
-export function ProductsPageClient({ products }: { products: any[] }) {
+export function ProductsPageClient({
+  products,
+  categories,
+}: {
+  products: any[];
+  categories: { name: string; slug: string }[];
+}) {
   const [search, setSearch] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("All");
 
-  const filtered = products.filter(
-    (p) =>
-      p.name?.toLowerCase().includes(search.toLowerCase()) && p.inStock !== false
-  );
+  const filtered = useMemo(() => {
+    return products.filter((p) => {
+      const matchesSearch = p.name?.toLowerCase().includes(search.toLowerCase());
+      const matchesCategory =
+        selectedCategory === "All" ||
+        p.categories?.some((c: any) => c.slug === selectedCategory);
+      return matchesSearch && matchesCategory && p.inStock !== false;
+    });
+  }, [products, search, selectedCategory]);
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
@@ -34,22 +46,31 @@ export function ProductsPageClient({ products }: { products: any[] }) {
                 Category
               </h3>
               <div className="space-y-2">
-                {["All", "Men", "Women", "Accessories", "Brands"].map(
-                  (cat) => (
-                    <label
-                      key={cat}
-                      className="flex items-center gap-2 text-sm text-gray-600 cursor-pointer"
-                    >
-                      <input
-                        type="radio"
-                        name="category"
-                        defaultChecked={cat === "All"}
-                        className="text-primary focus:ring-primary"
-                      />
-                      {cat}
-                    </label>
-                  )
-                )}
+                <label className="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
+                  <input
+                    type="radio"
+                    name="category"
+                    checked={selectedCategory === "All"}
+                    onChange={() => setSelectedCategory("All")}
+                    className="text-primary focus:ring-primary"
+                  />
+                  All
+                </label>
+                {categories.map((cat) => (
+                  <label
+                    key={cat.slug}
+                    className="flex items-center gap-2 text-sm text-gray-600 cursor-pointer"
+                  >
+                    <input
+                      type="radio"
+                      name="category"
+                      checked={selectedCategory === cat.slug}
+                      onChange={() => setSelectedCategory(cat.slug)}
+                      className="text-primary focus:ring-primary"
+                    />
+                    {cat.name}
+                  </label>
+                ))}
               </div>
             </div>
           </div>

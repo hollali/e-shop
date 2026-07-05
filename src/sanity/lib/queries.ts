@@ -8,6 +8,7 @@ export const productsQuery = groq`*[_type == "product" && defined(slug.current)]
   price,
   comparePrice,
   "images": images[]{asset->{url}},
+  "categories": categories[]->{name, "slug": slug.current},
   sizes,
   colors,
   inStock,
