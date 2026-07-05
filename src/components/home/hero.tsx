@@ -3,18 +3,10 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { client } from "@/sanity/lib/client";
-import { bannersQuery } from "@/sanity/lib/queries";
 
-export function Hero() {
-  const [slides, setSlides] = useState<any[]>([]);
+export function Hero({ banners }: { banners: any[] }) {
+  const [slides, setSlides] = useState<any[]>(banners);
   const [current, setCurrent] = useState(0);
-
-  useEffect(() => {
-    client.fetch(bannersQuery).then((data) => {
-      if (data && data.length > 0) setSlides(data);
-    });
-  }, []);
 
   useEffect(() => {
     if (slides.length === 0) return;
