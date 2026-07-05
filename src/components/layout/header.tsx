@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useUser } from "@clerk/nextjs";
 import { TopBar } from "./top-bar";
 import { MainNav } from "./main-nav";
@@ -25,6 +25,15 @@ export function Header({
   const [searchOpen, setSearchOpen] = useState(false);
   const { isSignedIn } = useUser();
   const itemCount = useCart((s) => s.getItemCount());
+
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => { document.body.style.overflow = ""; };
+  }, [mobileMenuOpen]);
 
   return (
     <header className="sticky top-0 z-50 bg-white">
@@ -119,41 +128,70 @@ export function Header({
 
       <MainNav items={mainNavItems} />
 
-      {mobileMenuOpen && (
-        <div className="lg:hidden border-b border-gray-200 bg-white">
-          <div className="px-4 py-3 space-y-2">
+      {/* Mobile sidebar drawer */}
+      <div className={`fixed inset-0 z-50 lg:hidden ${mobileMenuOpen ? '' : 'pointer-events-none'}`}>
+        <div
+          className={`absolute inset-0 bg-black/50 transition-opacity duration-300 ${mobileMenuOpen ? 'opacity-100' : 'opacity-0'}`}
+          onClick={() => setMobileMenuOpen(false)}
+        />
+        <div
+          className={`absolute inset-y-0 left-0 w-72 bg-white shadow-xl transition-transform duration-300 ease-in-out ${mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}
+        >
+          <div className="flex items-center justify-between h-16 px-4 border-b">
+            <Link href="/" className="text-lg font-bold text-primary tracking-tight">
+              STYLEHIVE
+            </Link>
+            <button
+              onClick={() => setMobileMenuOpen(false)}
+              className="p-2 hover:bg-gray-100 rounded-md"
+            >
+              <X size={20} />
+            </button>
+          </div>
+
+          <div className="px-4 py-4 space-y-1 overflow-y-auto" style={{ maxHeight: "calc(100% - 7rem)" }}>
             {mainNavItems.map((item) => (
               <Link
                 key={item.title}
                 href={item.href}
-                className="block py-2 text-sm font-semibold uppercase text-gray-800 hover:text-primary"
+                className="block py-3 text-sm font-semibold uppercase text-gray-800 hover:text-primary border-b border-gray-100"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 {item.title}
               </Link>
             ))}
-            <hr className="my-2" />
-            {!isSignedIn && (
-              <>
+          </div>
+
+          <div className="absolute bottom-0 left-0 right-0 p-4 border-t bg-gray-50">
+            {!isSignedIn ? (
+              <div className="space-y-2">
                 <Link
                   href="/sign-in"
-                  className="block py-2 text-sm text-gray-600 hover:text-primary"
+                  className="block w-full text-center py-2.5 text-sm font-medium text-white bg-primary rounded-md hover:bg-primary-600 transition-colors"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   Login
                 </Link>
                 <Link
                   href="/sign-up"
-                  className="block py-2 text-sm text-gray-600 hover:text-primary"
+                  className="block w-full text-center py-2.5 text-sm font-medium text-gray-700 border border-gray-300 rounded-md hover:border-primary transition-colors"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   Register
                 </Link>
-              </>
+              </div>
+            ) : (
+              <Link
+                href="/dashboard"
+                className="block w-full text-center py-2.5 text-sm font-medium text-white bg-primary rounded-md hover:bg-primary-600 transition-colors"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Dashboard
+              </Link>
             )}
           </div>
         </div>
-      )}
+      </div>
     </header>
   );
 }
