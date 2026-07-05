@@ -2,9 +2,12 @@
 
 import Link from "next/link";
 import { useUser, UserButton } from "@clerk/nextjs";
-import { TOP_BAR_LINKS } from "@/lib/constants";
 
-export function TopBar() {
+export function TopBar({
+  items,
+}: {
+  items: { title: string; href: string }[];
+}) {
   const { isSignedIn } = useUser();
 
   return (
@@ -13,13 +16,13 @@ export function TopBar() {
         <div className="flex justify-between h-9">
           <div className="flex items-center">
             <nav className="flex space-x-1">
-              {TOP_BAR_LINKS.map((link) => (
+              {items.map((link) => (
                 <Link
-                  key={link.name}
+                  key={link.title}
                   href={link.href}
                   className="text-xs text-gray-600 hover:text-primary px-2 py-1 transition-colors"
                 >
-                  {link.name}
+                  {link.title}
                 </Link>
               ))}
             </nav>

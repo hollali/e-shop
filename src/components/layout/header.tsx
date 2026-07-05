@@ -8,7 +8,19 @@ import { MainNav } from "./main-nav";
 import { useCart } from "@/store/cart";
 import { Search, ShoppingBag, Heart, Menu, X } from "lucide-react";
 
-export function Header() {
+interface NavItem {
+  title: string;
+  href: string;
+  children?: { title: string; href: string }[];
+}
+
+export function Header({
+  topBarItems,
+  mainNavItems,
+}: {
+  topBarItems: { title: string; href: string }[];
+  mainNavItems: NavItem[];
+}) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const { isSignedIn } = useUser();
@@ -16,7 +28,7 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 bg-white">
-      <TopBar />
+      <TopBar items={topBarItems} />
 
       <div className="border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4">
@@ -105,19 +117,19 @@ export function Header() {
         </div>
       )}
 
-      <MainNav />
+      <MainNav items={mainNavItems} />
 
       {mobileMenuOpen && (
         <div className="lg:hidden border-b border-gray-200 bg-white">
           <div className="px-4 py-3 space-y-2">
-            {["MEN", "WOMEN", "BRANDS", "DISCOUNT", "UNISEX"].map((cat) => (
+            {mainNavItems.map((item) => (
               <Link
-                key={cat}
-                href={`/products?category=${cat.toLowerCase()}`}
+                key={item.title}
+                href={item.href}
                 className="block py-2 text-sm font-semibold uppercase text-gray-800 hover:text-primary"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                {cat}
+                {item.title}
               </Link>
             ))}
             <hr className="my-2" />

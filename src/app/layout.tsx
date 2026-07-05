@@ -5,6 +5,8 @@ import { Footer } from "@/components/layout/footer";
 import { SITE_NAME, SITE_DESCRIPTION } from "@/lib/constants";
 import { SanityLive } from "@/sanity/lib/live";
 import { CartLoader } from "@/components/cart/cart-loader";
+import { client } from "@/sanity/lib/client";
+import { navigationQuery } from "@/sanity/lib/queries";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -17,11 +19,33 @@ export const metadata: Metadata = {
     "fashion, clothing, outfits, best shopping site, africa, startup, online store",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  let navData: any = null;
+  try { navData = await client.fetch(navigationQuery); } catch (_) {}
+
+  const topBarItems = navData?.topBarItems?.length
+    ? navData.topBarItems
+    : [
+        { title: "Contact", href: "/contact" },
+        { title: "Products", href: "/products" },
+        { title: "Style Gallery", href: "/style-gallery" },
+        { title: "About", href: "/about" },
+      ];
+
+  const mainNavItems = navData?.mainNavItems?.length
+    ? navData.mainNavItems
+    : [
+        { title: "MEN", href: "/products?category=men" },
+        { title: "WOMEN", href: "/products?category=women" },
+        { title: "BRANDS", href: "/products?category=brands" },
+        { title: "DISCOUNT", href: "/products?discount=true" },
+        { title: "UNISEX", href: "/products?category=unisex" },
+      ];
+
   return (
     <ClerkProvider
       signInUrl="/sign-in"
@@ -29,7 +53,7 @@ export default function RootLayout({
     >
       <html lang="en">
         <body className="min-h-screen flex flex-col">
-          <Header />
+          <Header topBarItems={topBarItems} mainNavItems={mainNavItems} />
           <main className="flex-1">{children}</main>
           <Footer />
           <SanityLive />

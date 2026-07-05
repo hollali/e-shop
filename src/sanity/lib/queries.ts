@@ -82,3 +82,9 @@ export const productBySlugQuery = groq`*[_type == "product" && slug.current == $
   inStock,
   featured
 }`;
+
+export const navigationQuery = groq`*[_type == "navigation"][0] {
+  _id,
+  topBarItems[] { title, href },
+  mainNavItems[] { title, href, children[] { title, href } }
+}`;
