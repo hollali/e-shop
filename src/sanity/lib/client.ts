@@ -6,5 +6,5 @@ export const client = createClient({
   projectId: projectId || 'missing',
   dataset: dataset || 'production',
   apiVersion,
-  useCdn: true,
+  useCdn: false,
 })
