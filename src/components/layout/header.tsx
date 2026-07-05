@@ -79,7 +79,7 @@ export function Header() {
                 </Link>
               ) : (
                 <Link
-                  href="/auth/login"
+                  href="/sign-in"
                   className="hidden sm:inline-flex items-center h-9 px-4 bg-primary text-white text-sm font-medium rounded-md hover:bg-primary-600 transition-colors"
                 >
                   Sell Now
@@ -124,14 +124,14 @@ export function Header() {
             {!isSignedIn && (
               <>
                 <Link
-                  href="/auth/login"
+                  href="/sign-in"
                   className="block py-2 text-sm text-gray-600 hover:text-primary"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   Login
                 </Link>
                 <Link
-                  href="/auth/register"
+                  href="/sign-up"
                   className="block py-2 text-sm text-gray-600 hover:text-primary"
                   onClick={() => setMobileMenuOpen(false)}
                 >

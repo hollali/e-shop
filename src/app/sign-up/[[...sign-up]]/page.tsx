@@ -1,6 +1,6 @@
 import { SignUp } from "@clerk/nextjs";
 
-export default function RegisterPage() {
+export default function SignUpPage() {
   return (
     <div className="min-h-[70vh] flex items-center justify-center px-4 py-12">
       <SignUp
@@ -13,7 +13,7 @@ export default function RegisterPage() {
             formButtonPrimary: "bg-primary hover:bg-primary-600",
           },
         }}
-        signInUrl="/auth/login"
+        signInUrl="/sign-in"
       />
     </div>
   );

@@ -37,19 +37,20 @@ export function Hero() {
   return (
     <div className="relative overflow-hidden bg-gray-900 text-white">
       {slide.image && (
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url(${slide.image})` }}
+        <img
+          src={slide.image}
+          alt={slide.title || ""}
+          className="absolute inset-0 w-full h-full object-cover"
         />
       )}
-      <div className="absolute inset-0 bg-black/40" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-black/10" />
       <div className="relative max-w-7xl mx-auto px-4">
-        <div className="flex flex-col items-center text-center py-24 md:py-32">
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-4">
+        <div className="flex flex-col items-center text-center py-32 md:py-44 lg:py-56">
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-4 drop-shadow-lg">
             {slide.title}
           </h1>
           {slide.subtitle && (
-            <p className="text-lg md:text-xl text-white/80 mb-8 max-w-lg">
+            <p className="text-lg md:text-xl text-white/90 mb-8 max-w-lg drop-shadow">
               {slide.subtitle}
             </p>
           )}

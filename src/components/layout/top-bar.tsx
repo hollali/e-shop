@@ -46,14 +46,14 @@ export function TopBar() {
             ) : (
               <>
                 <Link
-                  href="/auth/login"
+                  href="/sign-in"
                   className="text-xs text-gray-600 hover:text-primary transition-colors"
                 >
                   Login
                 </Link>
                 <span className="text-xs text-gray-400">/</span>
                 <Link
-                  href="/auth/register"
+                  href="/sign-up"
                   className="text-xs text-gray-600 hover:text-primary transition-colors"
                 >
                   Register

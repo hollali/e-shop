@@ -35,7 +35,7 @@ export function MainNav() {
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
 
   return (
-    <div className="border-b border-gray-200 bg-white">
+    <div className="border-b border-gray-200 bg-white hidden lg:block">
       <div className="max-w-7xl mx-auto px-4">
         <nav className="flex items-center">
           {NAV_CATEGORIES.map((cat) => {

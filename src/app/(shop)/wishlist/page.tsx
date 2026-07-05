@@ -63,7 +63,7 @@ export default function WishlistPage() {
         <Heart size={48} className="mx-auto text-gray-300 mb-4" />
         <h1 className="text-2xl font-bold mb-2">Your Wishlist</h1>
         <p className="text-gray-500 mb-6">Sign in to save your favourite items.</p>
-        <Link href="/auth/login">
+        <Link href="/sign-in">
           <Button>Sign In</Button>
         </Link>
       </div>
