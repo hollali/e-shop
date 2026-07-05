@@ -5,6 +5,8 @@ import { Newsletter } from "@/components/home/newsletter";
 import { client } from "@/sanity/lib/client";
 import { bannersQuery } from "@/sanity/lib/queries";
 
+export const revalidate = 30;
+
 export default async function HomePage() {
   let banners: any[] = [];
   try { banners = await client.fetch(bannersQuery); } catch (_) {}
